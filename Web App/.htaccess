@@ -1,0 +1,23 @@
+RewriteEngine On
+RewriteBase /DATN_Chamcong/
+
+# Nếu truy cập thư mục gốc (http://127.0.0.1/DATN_Chamcong/), chuyển hướng đến login.php
+RewriteCond %{REQUEST_URI} ^/DATN_Chamcong/?$
+RewriteRule ^(.*)$ login.php [L]
+
+# Nếu người dùng chưa đăng nhập và không truy cập login.php hoặc logout.php, chuyển hướng đến login.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !/login\.php
+RewriteCond %{REQUEST_URI} !/logout\.php
+RewriteCond %{REQUEST_URI} !\.(css|js|png|jpg|jpeg|gif|ico|woff|woff2|ttf|eot|svg)$
+RewriteCond %{HTTP_COOKIE} !PHPSESSID [NC]
+RewriteRule ^(.*)$ login.php [L]
+
+# Nếu đã đăng nhập, cho phép truy cập các trang khác
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !/login\.php
+RewriteCond %{REQUEST_URI} !/logout\.php
+RewriteCond %{HTTP_COOKIE} PHPSESSID [NC]
+RewriteRule ^(.*)$ index.php [L]
